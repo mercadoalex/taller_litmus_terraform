@@ -34,15 +34,10 @@ Before using this project, ensure you have the following installed:
 
 ## **Setup Instructions**
 
-### **1. Clone the Repository**
-Clone this repository to your local machine:
-```bash
-git clone <repository-url>
-cd tallerlitmus
----
-### **2. Configure Terraform Variables
-Edit the terraform/terraform.tfvars file to provide the required values:
+### **2. Configure Terraform Variables**
+Edit the `terraform/terraform.tfvars` file to provide the required values:
 
+```hcl
 token        = "<your-linode-api-token>"
 k8s_version  = "1.27"
 region       = "us-west"
