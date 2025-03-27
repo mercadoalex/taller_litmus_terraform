@@ -49,7 +49,7 @@ pools = [
     count = 1
   }
 ]
-
+```
 ---
 
 ### **3. Initialize Terraform**
@@ -57,14 +57,14 @@ Run the following command to initialize Terraform.
 
 ```bash
 terraform init
-
+```
 ---
 
 ### **4.  Plan the Deployment
 Generate a plan to review the resources that will be created:
-
+```
 terraform plan -var-file="terraform/terraform.tfvars"
-
+```
 ---
 
 ### **5. Apply the Deployment
@@ -72,12 +72,14 @@ Apply the Terraform configuration to create the resources:
 
 ### **6.  Verify the Deployment
 Check the generated kubeconfig file:
+```
 ls terraform/tallerlitmus-lke-cluster-kubeconfig.yaml
-
+```
 Use kubectl to verify the Kubernetes cluster:
-Use kubectl to verify the Kubernetes cluster:
 
-
+```
+kubectl --kubeconfig=terraform/tallerlitmus-lke-cluster-kubeconfig.yaml get nodes
+```
 ### Key Features
 Dynamic Kubeconfig Generation:
 
