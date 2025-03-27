@@ -1,0 +1,29 @@
+# Terraform state files
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate.*
+.crash.log
+
+# Terraform plan files
+*.tfplan
+
+# Terraform provider plugins
+.terraform/
+.terraform.lock.hcl
+
+# Kubeconfig file
+terraform/tallerlitmus-lke-cluster-kubeconfig.yaml
+
+# Sensitive variable files
+terraform.tfvars
+*.tfvars
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# IDE-specific files
+.vscode/
+.idea/
+.DS_Store
