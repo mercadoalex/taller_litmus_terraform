@@ -1,7 +1,7 @@
 // Configure the NodeBalancer
 resource "linode_nodebalancer" "tallerlitmus_lb" {
-  label  = "${var.label}-lb" // Label for the NodeBalancer
-  region = var.region        // Region for the NodeBalancer
+  label  = "${var.label}-${var.environment}-lb" // Label for the NodeBalancer
+  region = var.region                           // Region for the NodeBalancer
 }
 
 // Configure the NodeBalancer's configuration

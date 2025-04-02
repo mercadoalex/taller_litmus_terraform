@@ -5,9 +5,17 @@ terraform {
       source  = "linode/linode"
       version = "2.7.1" // Linode provider version
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0" // Kubernetes provider version
+    }
     litmuschaos = {
       source  = "williamokano/litmus-chaos"
       version = "0.2.0" // LitmusChaos provider version
+    }
+    datadog = {
+      source  = "DataDog/datadog"
+      version = "3.21.0" // Datadog provider version
     }
   }
 }
@@ -17,23 +25,17 @@ provider "linode" {
   token = var.token // Linode API token
 }
 
-// Write the kubeconfig to a file
-resource "local_file" "kubeconfig" {
-  filename = "${path.module}/tallerlitmus-lke-cluster-kubeconfig.yaml" // Path to save the kubeconfig file
-  content  = linode_lke_cluster.tallerlitmus.kubeconfig               // Kubeconfig content from the Linode LKE cluster
-}
-
-// Configure the Kubernetes provider to use the kubeconfig file
+// Configure the Kubernetes provider to use the existing kubeconfig file
 provider "kubernetes" {
-  config_path = local_file.kubeconfig.filename // Use the path of the generated kubeconfig file
+  config_path = "${path.module}/${var.kubeconfig_file}" // Concatenate path.module with var.kubeconfig_path}
 }
 
 // Create a Kubernetes cluster using Linode LKE
 resource "linode_lke_cluster" "tallerlitmus" {
-  k8s_version = var.k8s_version // Kubernetes version
-  label       = var.label       // Cluster label
-  region      = var.region      // Region for the cluster
-  tags        = var.tags        // Tags for the cluster
+  k8s_version = var.k8s_version                   // Kubernetes version
+  label       = "${var.label}-${var.environment}" // Cluster label with environment
+  region      = var.region                        // Region for the cluster
+  tags        = var.tags                          // Tags for the cluster
 
   // Dynamically create node pools based on the provided configuration
   dynamic "pool" {
@@ -62,9 +64,9 @@ resource "linode_instance" "proxy" {
 
   // SSH connection details for provisioning
   connection {
-    type     = "ssh"             // Use SSH for provisioning
-    user     = "root"            // SSH user
-    password = var.root_password // SSH password
+    type     = "ssh"                                 // Use SSH for provisioning
+    user     = "root"                                // SSH user
+    password = var.root_password                     // SSH password
     host     = tolist(linode_instance.proxy.ipv4)[1] // Explicitly use the public IP
     timeout  = "10m"                                 // Increase timeout to allow for instance boot
   }
@@ -106,7 +108,7 @@ output "proxy_ipv4_debug" {
 }
 
 output "kubeconfig_path" {
-  value       = local_file.kubeconfig.filename // Path to the kubeconfig file
+  value       = "${path.module}/tallerlitmus-lke-cluster-demo-kubeconfig.yaml" // Path to the kubeconfig file
   description = "The path to the kubeconfig file used by the Kubernetes provider"
 }
 
@@ -125,4 +127,10 @@ output "id" {
 
 output "pool" {
   value = linode_lke_cluster.tallerlitmus.pool // Node pool details
+}
+
+output "kubeconfig_debug" {
+  value       = linode_lke_cluster.tallerlitmus.kubeconfig
+  description = "Content of the kubeconfig"
+  sensitive   = true
 }

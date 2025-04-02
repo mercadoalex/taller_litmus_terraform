@@ -1,3 +1,15 @@
+# Environment Variable
+variable "environment" {
+  description = "The environment for the Kubernetes cluster (e.g., demo, staging, production)."
+  type        = string
+  default     = "dev" # Default value
+}
+variable "kubeconfig_file" {
+  description = "Path to the kubeconfig file for the Kubernetes cluster"
+  type        = string
+  default     = "dev-lke-cluster-demo-kubeconfig.yaml"
+}
+
 variable "token" {
   description = "Your Linode API Personal Access Token. (required)"
   type        = string
@@ -11,7 +23,7 @@ variable "k8s_version" {
 # Cluster Label
 variable "label" {
   description = "The unique label to assign to this cluster. (required)"
-  default     = "default-lke-cluster"
+  default     = "dev-lke-cluster"
 }
 
 variable "region" {
@@ -30,15 +42,25 @@ variable "pools" {
   type = list(object({
     type  = string
     count = number
+    tags  = map(string) # Add a map for tags
+
   }))
   default = [
     {
       type  = "g6-standard-4"
       count = 3
+      tags = {
+        author = "Alex"
+        cloud  = "akamai"
+      }
     },
     {
       type  = "g6-standard-8"
       count = 3
+      tags = {
+        author = "Alex"
+        cloud  = "akamai"
+      }
     }
   ]
 }
@@ -47,4 +69,24 @@ variable "root_password" {
   description = "The root password for the Linode instance. (required)"
   type        = string
   default     = "TallerLitmus@2025!" // A secure and valid default password
+}
+variable "datadog_api_key" {
+  description = "Datadog API key"
+  type        = string
+}
+
+variable "datadog_app_key" {
+  description = "Datadog application key"
+  type        = string
+}
+# List of Kubernetes Worker Node IPs
+variable "worker_nodes" {
+  description = "A list of IP addresses for the Kubernetes worker nodes."
+  type        = list(string)
+  default     = [] # Replace with actual IPs or leave empty to provide dynamically
+}
+variable "db_pv" {
+  description = "The name of the Persistent Volume for the database."
+  type        = string
+  default     = "db-pv-dev" // Persistent Volume
 }
