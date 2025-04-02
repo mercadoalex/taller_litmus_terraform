@@ -27,3 +27,9 @@ terraform.tfvars
 .vscode/
 .idea/
 .DS_Store
+
+# YAML files
+*.yaml
+
+# Virtual environment directory
+venv/
