@@ -13,7 +13,7 @@ variable "kubeconfig_file" {
 variable "token" {
   description = "Your Linode API Personal Access Token. (required)"
   type        = string
-  default     = "d03ab8333e1c304756e0f6fbe0b9a38b20dd538c4a6ab85af23770829d761acd"
+  default     = "solofuedemoporesopuseeltokenaqui"
 }
 
 variable "k8s_version" {
