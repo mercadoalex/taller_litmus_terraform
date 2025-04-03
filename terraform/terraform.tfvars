@@ -24,7 +24,7 @@ pools = [
   }
 ]
 kubeconfig_file = "dev-lke-cluster-dev-kubeconfig.yaml"
-datadog_api_key = "a2321a4ea8941efbdcab2fa897e6bfa3"         # Datadog API key
-datadog_app_key = "061cce7ef5ca0237ecefe54811787b098205ab85" # Datadog application key
+datadog_api_key = "dsadas"         # Datadog API key
+datadog_app_key = "0dsa" # Datadog application key
 db_pv           = "db-pv-dev"
 
